@@ -4,3 +4,6 @@ test-results/
 FitNesseRoot/ErrorLogs/
 FitNesseRoot/files/testResults/
 *.swp
+.classpath
+.project
+/bin/
