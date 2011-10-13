@@ -1,7 +1,10 @@
 package HuntTheWumpus;
 
+import static HuntTheWumpus.Game.EAST;
+import static HuntTheWumpus.Game.NORTH;
+import static HuntTheWumpus.Game.SOUTH;
+import static HuntTheWumpus.Game.WEST;
 import junit.framework.TestCase;
-import static HuntTheWumpus.Game.*;
 import HuntTheWumpus.fixtures.MockConsole;
 
 public class GamePresenterTest extends TestCase {
@@ -12,6 +15,7 @@ public class GamePresenterTest extends TestCase {
     protected void setUp() throws Exception {
         mc = new MockConsole();
         p = new GamePresenter(mc);
+        p.setLanguageFile("dutch.properties");
         g = p.getGame();
     }
 

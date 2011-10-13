@@ -1,11 +1,18 @@
 package HuntTheWumpus;
 
-import java.util.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 public class GamePresenter {
 
     private Console console;
     private final Game game = new Game();
+    
+    private String languageFile = "english.properties";
 
     public GamePresenter() {
         this(null);
@@ -138,7 +145,8 @@ public class GamePresenter {
 
     private void movePlayer(String direction) {
         if (game.move(direction) == false)
-            console.print("You can't go " + directionName(direction) + " from here.");
+            //console.print("You can't go " + directionName(direction) + " from here.");
+        	console.print(getMessage("directionChangeForbidden", directionName(direction)));
     }
 
     public String getAvailableDirections() {
@@ -181,8 +189,27 @@ public class GamePresenter {
     public Game getGame() {
         return game;
     }
+    
+    public String getMessage(String key, String... parameters) {
+    	try {
+			ResourceBundle bundle = new PropertyResourceBundle(GamePresenter.class.getResourceAsStream(languageFile));
+			return String.format(bundle.getString(key), (Object[]) parameters);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return "";
+    }
 
-    //
+    public void setLanguageFile(String languageFile) {
+		this.languageFile = languageFile;
+	}
+
+
+	//
     // Private Classes
     //
     private class AvailableDirections {
@@ -193,7 +220,7 @@ public class GamePresenter {
 
         public String toString() {
             if (directions.isEmpty())
-                return "There are no exits!";
+                return getMessage("noExits");
             else {
                 return assembleDirections();
             }
@@ -208,7 +235,7 @@ public class GamePresenter {
                     placeDirection(dir);
                 }
             }
-            return "You can go " + available.toString() + " from here.";
+            return getMessage("directionChange", available.toString());
         }
 
         private void placeDirection(String dir) {
