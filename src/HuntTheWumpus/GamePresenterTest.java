@@ -15,7 +15,6 @@ public class GamePresenterTest extends TestCase {
     protected void setUp() throws Exception {
         mc = new MockConsole();
         p = new GamePresenter(mc);
-        p.setLanguageFile("dutch.properties");
         g = p.getGame();
     }
 

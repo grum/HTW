@@ -3,6 +3,7 @@ package HuntTheWumpus;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -175,13 +176,13 @@ public class GamePresenter {
 
     private String directionName(String direction) {
         if (direction.equals(Game.NORTH))
-            return "north";
+            return getMessage("north");
         else if (direction.equals(Game.SOUTH))
-            return "south";
+            return getMessage("south");
         else if (direction.equals(Game.EAST))
-            return "east";
+            return getMessage("east");
         else if (direction.equals(Game.WEST))
-            return "west";
+            return getMessage("west");
         else
             return "tilt";
     }
@@ -193,7 +194,11 @@ public class GamePresenter {
     public String getMessage(String key, String... parameters) {
     	try {
 			ResourceBundle bundle = new PropertyResourceBundle(GamePresenter.class.getResourceAsStream(languageFile));
-			return String.format(bundle.getString(key), (Object[]) parameters);
+			try {
+				return String.format(bundle.getString(key), (Object[]) parameters);
+			} catch (MissingResourceException ex) {
+				return key;
+			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -241,7 +246,7 @@ public class GamePresenter {
         private void placeDirection(String dir) {
             directionsPlaced++;
             if (isLastOfMany())
-                available.append(" and ");
+                available.append(" ").append(getMessage("and")).append(" ");
             else if (notFirst())
                 available.append(", ");
             available.append(directionName(dir));
